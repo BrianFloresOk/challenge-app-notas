@@ -1,0 +1,6 @@
+/backend/node_modules
+/backend/build
+/backend/*.env
+*.log
+/backend/ormconfig.json
+/frontend/node_modules

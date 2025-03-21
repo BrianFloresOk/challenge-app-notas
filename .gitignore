@@ -3,4 +3,5 @@
 /backend/*.env
 *.log
 /backend/ormconfig.json
-/frontend/node_modules
+/frontend/**node_modules
+/backend/src/database/db.sqlite

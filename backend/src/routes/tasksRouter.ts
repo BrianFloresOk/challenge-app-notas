@@ -7,10 +7,10 @@ router.get("/", (_req, res) => {
     res.json({"message": "Bienvenido a la API"});
 })
 
-router.get("/tasks")
+router.get("/tasks", TasksController.getAllTasks)
 router.post("/tasks", TasksController.addTask)
-router.put("/tasks/:id")
-router.delete("/tasks/:id")
+router.put("/tasks/:id", TasksController.updateTask)
+router.delete("/tasks/:id", TasksController.deleteTask)
 
 
 export default router;

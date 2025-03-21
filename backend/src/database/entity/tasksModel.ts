@@ -16,7 +16,7 @@ export class Task {
     @Column()
     completed: boolean
 
-    @Column()
-    createdAt: Date
+    @Column({type:"date"})
+    createdAt: string
 
 }

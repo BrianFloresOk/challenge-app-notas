@@ -7,7 +7,7 @@ class TasksController {
         try {
             const taskRepository = AppDataSource.getRepository(Task);
             const tasks = await taskRepository.find()
-            console.log(tasks)
+
             res.status(200).json({
                 status: 200,
                 message: "Tareas encontradas",
@@ -66,9 +66,9 @@ class TasksController {
                 })
             } else {
 
-                taskFinded.title = body.title? body.title : taskFinded.title
-                taskFinded.description = body.description? body.description : taskFinded.description
-                taskFinded.completed = body.completed? body.completed : taskFinded.completed
+                taskFinded.title = body.title ? body.title : taskFinded.title
+                taskFinded.description = body.description ? body.description : taskFinded.description
+                taskFinded.completed = body.completed ? body.completed : taskFinded.completed
 
                 await taskRepository.save(taskFinded)
 
@@ -86,17 +86,39 @@ class TasksController {
                 message: "Ocurrió un error al actualizar tarea",
             });
         }
-
-
     }
 
     deleteTask = async (req: Request, res: Response) => {
         const { id } = req.params;
 
+        try {
+            const taskRepository = AppDataSource.getRepository(Task);
+            const taskFinded = await taskRepository.findOneBy({
+                id: +id,
+            })
 
+            if (!taskFinded) {
+                res.status(404).json({
+                    status: 404,
+                    message: "No se pudo eliminar tarea"
+                })
+            } else {
+                await taskRepository.remove(taskFinded)
 
+                res.status(200).json({
+                    status: 200,
+                    message: "Exito, tarea eliminada correctamente"
+                })
+            }
+
+        } catch (error) {
+            console.error(error);
+            res.status(400).json({
+                status: 400,
+                message: "Ocurrió un error al eliminar tarea",
+            });
+        }
     }
-
 }
 
 export default new TasksController();

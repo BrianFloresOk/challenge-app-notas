@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ITask } from '../interfaces/ITasks';
-import { getAllTask, getDetailOneTask, newTaskMore } from '../services/tasks.sevices';
+import { getAllTask, getDetailOneTask, newTaskService, updateTaskService, deleteTaskService } from '../services/tasks.sevices';
 
 
 export const useTasks = () => {
@@ -28,9 +28,8 @@ export const useTasks = () => {
     return { tasks, loading, error };
 };
 
-
 export const useTaskDetail = (id: string) => {
-    const [taskDetail, setTaskDetail] = useState<ITask| null>(null);
+    const [taskDetail, setTaskDetail] = useState<ITask | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +52,7 @@ export const useTaskDetail = (id: string) => {
         }
     }, [id]);
 
-    return { taskDetail, loading, error };
+    return { taskDetail, setTaskDetail, loading, error };
 };
 
 export const useCreateTask = () => {
@@ -65,16 +64,58 @@ export const useCreateTask = () => {
         setLoading(true);
         setError(null);
         try {
-            const result = await newTaskMore(task);
+            const result = await newTaskService(task);
             setTaskCreated(result);
         } catch (error) {
             setError('Ocurrió un error al mandar los datos');
             console.log(error);
-            
+
         } finally {
             setLoading(false);
         }
     };
 
     return { createTask, loading, error, taskCreated };
+};
+
+export const useUpdateTask = (taskDetail: ITask | null, setTaskDetail: (task: ITask) => void) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const update = async (updatedTask: ITask) => {
+        if (!taskDetail) return;
+
+        // Guarda el estado anterior
+        const previousTask = { ...taskDetail };
+        setTaskDetail(updatedTask);
+
+        try {
+            setLoading(true);
+            
+            await updateTaskService(updatedTask);
+        } catch (error) {
+            console.log(error);
+            setError("Error al actualizar la tarea");
+            setTaskDetail(previousTask);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { updateTask: update, loading, error };
+};
+
+export const useDeleteTask = () => {
+    const [error, setError] = useState<string | null>(null);
+
+    const deleteTask = async (id: string) => {
+        setError(null);
+        try {
+            await deleteTaskService(id);
+        } catch (err) {
+            setError((err as Error).message);
+        }
+    };
+
+    return { deleteTask, error };
 };

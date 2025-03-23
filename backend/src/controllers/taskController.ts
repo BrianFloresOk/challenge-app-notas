@@ -53,6 +53,7 @@ class TasksController {
     updateTask = async (req: Request, res: Response) => {
         const { id } = req.params;
         const body = req.body;
+
         try {
             const taskRepository = AppDataSource.getRepository(Task);
             const taskFinded = await taskRepository.findOneBy({
@@ -67,8 +68,11 @@ class TasksController {
             } else {
 
                 taskFinded.title = body.title ? body.title : taskFinded.title
-                taskFinded.description = body.description ? body.description : taskFinded.description
-                taskFinded.completed = body.completed ? body.completed : taskFinded.completed
+                taskFinded.description = body.description? body.description : taskFinded.description
+
+                if (body.hasOwnProperty('completed')) {
+                    taskFinded.completed = body.completed;
+                }
 
                 await taskRepository.save(taskFinded)
 

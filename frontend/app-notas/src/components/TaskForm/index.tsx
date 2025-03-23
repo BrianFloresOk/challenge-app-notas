@@ -25,7 +25,7 @@ const TaskForm = () => {
     };
 
     return (
-        <section className='bg-gray-100 pt-16'>
+        <section className='bg-gray-100 pt-16 h-screen'>
             <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold mb-4 text-center">Nueva Tarea ✏</h2>
 

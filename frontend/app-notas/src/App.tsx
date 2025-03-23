@@ -3,6 +3,7 @@ import Header from './components/Header/';
 import TaskList from './components/TaskList/';
 import TaskDetail from './components/TaskDetail';
 import TaskForm from './components/TaskForm/';
+import Footer from './components/Footer';
 
 const MyApp = () => {
   return (
@@ -14,6 +15,8 @@ const MyApp = () => {
           <Route path="/task/:id" element={<TaskDetail />} />
           <Route path="/task/nueva-tarea" element={<TaskForm />} />
         </Routes>
+
+        <Footer />
       </div>
     </Router>
   );

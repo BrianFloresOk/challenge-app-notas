@@ -25,7 +25,7 @@ export const getDetailOneTask = async (id: string) => {
     }
 }
 
-export const newTaskMore = async (task: ITask) => {
+export const newTaskService = async (task: ITask) => {
     try {
         const json = {
             method: 'POST',
@@ -46,5 +46,38 @@ export const newTaskMore = async (task: ITask) => {
 
     } catch (error) {
         console.log('Error creating task:', error);
+    }
+}
+
+export const updateTaskService = async (task: ITask) => {
+
+    try {
+        const json = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(task)
+        }
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${task.id}`, json);
+
+        if (!response.ok) {
+            throw new Error('Error al actualizar nota!');
+        }
+
+    } catch (error) {
+        console.log('Error al actualizar', error);
+    }
+}
+
+export const deleteTaskService = async (id: string) => {
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {'method': 'delete'})
+        const result = await response.json()
+        return result ? result: null;
+
+    } catch (error) {
+        console.log(error)
     }
 }

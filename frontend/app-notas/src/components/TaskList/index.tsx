@@ -14,9 +14,9 @@ const TaskList = () => {
                 <h2 className="text-2xl font-semibold mb-6">Mis tareas 🧨</h2>
             </div>
             <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                {tasks.map((task) => (
+                {tasks.map((task, index) => (
                     <Link to={`/task/${task.id}`}>
-                        <Task key={task.id} task={task} />
+                        <Task key={index} task={task} />
                     </Link>
                 ))}
             </div>

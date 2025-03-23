@@ -13,7 +13,7 @@ export class Task {
     @Column("text")
     description: string
 
-    @Column()
+    @Column({type:"boolean"})
     completed: boolean
 
     @Column({type:"date"})

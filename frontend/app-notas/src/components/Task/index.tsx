@@ -13,8 +13,18 @@ const Task = ({ task }: TaskProps) => {
             <div>
                 <p className="text-gray-700">{task.description}</p>
             </div>
+            <div className="mt-4">
+                <span
+                    className={`px-3 py-1 rounded-full text-sm ${
+                        task.completed ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white'
+                    }`}
+                >
+                    {task.completed ? 'Completada' : 'Pendiente'}
+                </span>
+            </div>
         </article>
     );
 };
 
 export default Task;
+

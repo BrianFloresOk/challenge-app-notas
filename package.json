@@ -1,0 +1,14 @@
+{
+  "name": "app-notas",
+  "version": "1.0.0",
+  "scripts": {
+    "start:frontend": "npm run dev --prefix frontend/app-notas",
+    "start:backend": "npm run dev --prefix backend",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
+

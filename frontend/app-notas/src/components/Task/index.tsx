@@ -11,7 +11,7 @@ const Task = ({ task }: TaskProps) => {
                 <h3 className="text-xl font-semibold text-blue-600">{task.title}</h3>
             </div>
             <div>
-                <p className="text-gray-700">{task.description}</p>
+                <p className="text-gray-700 truncate">{task.description}</p>
             </div>
             <div className="mt-4">
                 <span

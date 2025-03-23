@@ -5,3 +5,4 @@
 /backend/ormconfig.json
 /frontend/**node_modules
 /backend/src/database/db.sqlite
+node_modules

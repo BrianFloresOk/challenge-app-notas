@@ -5,14 +5,22 @@ import useSweetAlert from '../../hooks/useSweetAlert';
 
 const TaskForm = () => {
     const { createTask, loading, taskCreated, error } = useCreateTask();
-    const { showToast } = useSweetAlert()
+    const { showToast, showModal } = useSweetAlert();
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const createdAt = new Date().toLocaleDateString('sv-SE')
+
+        if (title.trim() === '' || description.trim() === '') {
+            
+            showModal("Error!", "error", "Los campos no deben estar vacíos")
+            return;
+        }
+
+        const createdAt = new Date().toLocaleDateString('sv-SE');
 
         const newTask: ITask = {
             title,
@@ -24,22 +32,21 @@ const TaskForm = () => {
     };
 
     useEffect(() => {
-        if(taskCreated) {
-            showToast("Tarea creada", "success", 2000)
-            setTitle('')
-            setDescription('')
-        }        
-    },[taskCreated, showToast])
-    
-    useEffect(() => {
-        if(error) {
-            showToast("Ocurrio un error", "error", 2000)
+        if (taskCreated) {
+            showToast("Tarea creada", "success", 2000);
+            setTitle('');
+            setDescription('');
         }
-        
-    },[error, showToast])
+    }, [taskCreated, showToast]);
+
+    useEffect(() => {
+        if (error) {
+            showToast("Ocurrió un error", "error", 2000);
+        }
+    }, [error, showToast]);
 
     return (
-        <section className='bg-gray-100 pt-16 h-screen'>
+        <section className="bg-gray-100 pt-16 h-screen">
             <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold mb-4 text-center">Nueva Tarea ✏</h2>
 
@@ -71,7 +78,6 @@ const TaskForm = () => {
                             rows={4}
                         />
                     </div>
-
                     <div className="flex justify-center">
                         <button
                             type="submit"

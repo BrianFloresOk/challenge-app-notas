@@ -11,6 +11,7 @@ router.get("/tasks", TasksController.getAllTasks)
 router.post("/tasks", TasksController.addTask)
 router.put("/tasks/:id", TasksController.updateTask)
 router.delete("/tasks/:id", TasksController.deleteTask)
+router.get("/tasks/:id", TasksController.getOneTask)
 
 
 export default router;

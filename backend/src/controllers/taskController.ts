@@ -119,6 +119,38 @@ class TasksController {
             });
         }
     }
+
+    getOneTask = async (req: Request, res: Response) => {
+        const { id } = req.params
+        try {
+            const taskRepository = AppDataSource.getRepository(Task);
+            const taskFinded = await taskRepository.findOneBy({
+                id: +id,
+            })
+
+            if (!taskFinded) {
+                res.status(404).json({
+                    status: 404,
+                    message: "No se encontraron datos de la tarea"
+                })
+            } else {
+
+                res.status(200).json({
+                    status: 200,
+                    message: "Exito, tarea encontrada!",
+                    data: taskFinded
+                })
+            }
+
+        } catch (error) {
+            console.error(error);
+            res.status(400).json({
+                status: 400,
+                message: "Ocurrió un error al eliminar tarea",
+            });
+        }
+    }
 }
+
 
 export default new TasksController();

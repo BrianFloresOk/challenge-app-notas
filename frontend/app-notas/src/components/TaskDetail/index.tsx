@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTaskDetail, useUpdateTask, useDeleteTask } from '../../hooks/useTasks';
-import Swal from "sweetalert2"
+import useSweetAlert from '../../hooks/useSweetAlert';
 
 const TaskDetail = () => {
     const { id } = useParams();
     const { taskDetail, loading, error, setTaskDetail } = useTaskDetail(id || '');
     const { updateTask } = useUpdateTask(taskDetail, setTaskDetail);
+    const { showModal, showToast, showFire } = useSweetAlert()
     const { deleteTask } = useDeleteTask();
     const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ const TaskDetail = () => {
         setIsEditing(false);
     };
 
-    const handleSave = () => {
+    const handleSave =  () => {
         const updatedTask = {
             ...taskDetail,
             title: editedTitle,
@@ -39,29 +40,29 @@ const TaskDetail = () => {
         };
 
         updateTask(updatedTask);
+
+        const title = "Tarea modificada"
+        const icon = "success"
+        const timer = 2000
+
+        showToast(title, icon, timer )
+
         setIsEditing(false);
     };
 
     const handleDelete = async () => {
-        const result = await Swal.fire({
-            title: '¿Estás seguro?',
-            text: "Esta tarea será eliminada de forma permanente.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar',
-            customClass: {
-                confirmButton: 'bg-red-600 text-white hover:bg-red-700 border-none',
-                cancelButton: 'bg-gray-600 text-white hover:bg-gray-700 border-none'
-            }
-        });
+        const title = "¿Estas seguro?"
+        const icon = "warning"
+        const text = "Esta tarea será eliminada de forma permanente"
+
+        const result = await showModal(title, icon, text)
 
         if (result.isConfirmed) {
             await deleteTask(String(taskDetail.id));
             navigate('/');
-            Swal.fire('Eliminado!', 'La tarea ha sido eliminada.', 'success'); // Muestra mensaje de éxito
+            showFire("Eliminado!", 'success','La tarea ha sido eliminada.')
         }
-    };
+    }
 
     return (
         <section className="bg-gray-100 h-screen pt-16">

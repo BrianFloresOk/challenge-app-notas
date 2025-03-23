@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCreateTask } from '../../hooks/useTasks';
 import { ITask } from '../../interfaces/ITasks';
+import useSweetAlert from '../../hooks/useSweetAlert';
 
 const TaskForm = () => {
-    const { createTask, loading, error, taskCreated } = useCreateTask();
+    const { createTask, loading, taskCreated, error } = useCreateTask();
+    const { showToast } = useSweetAlert()
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -18,11 +20,23 @@ const TaskForm = () => {
             createdAt,
             completed: false,
         };
-
-        console.log(newTask);
-
         createTask(newTask);
     };
+
+    useEffect(() => {
+        if(taskCreated) {
+            showToast("Tarea creada", "success", 2000)
+            setTitle('')
+            setDescription('')
+        }        
+    },[taskCreated, showToast])
+    
+    useEffect(() => {
+        if(error) {
+            showToast("Ocurrio un error", "error", 2000)
+        }
+        
+    },[error, showToast])
 
     return (
         <section className='bg-gray-100 pt-16 h-screen'>
@@ -68,14 +82,6 @@ const TaskForm = () => {
                         </button>
                     </div>
                 </form>
-
-                {error && <div className="mt-4 text-red-500 text-center">{error}</div>}
-
-                {taskCreated && (
-                    <div className="mt-4 text-green-500 text-center">
-                        Tarea creada: <span className="font-bold">{taskCreated.title}</span>
-                    </div>
-                )}
             </div>
         </section>
     );
